@@ -19,4 +19,21 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::middleware('auth:api')->post('/home', [HomeController::class, 'index']);
+//Route::middleware('auth:api')->post('/home', [HomeController::class, 'index']);
+
+// Open Routes
+Route::post("register", [HomeController::class, "register"]);
+Route::post("login", [HomeController::class, "login"]);
+
+// Protected Routes
+Route::group([
+    "middleware" => ["auth:api"]
+], function(){
+
+    Route::get("profile", [HomeController::class, "profile"]);
+    Route::get("logout", [HomeController::class, "logout"]);
+});
+
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:api');

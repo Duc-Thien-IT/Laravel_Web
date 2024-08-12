@@ -1,0 +1,92 @@
+- linkdownload: https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/
+
+- step download in cmd:
+1. composer require darkaonline/l5-swagger
+2. php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+
+- paste in file .env
+L5_SWAGGER_CONST_HOST=http://project.test/api/v1
+
+- paste in this controller
+/**
+ * @OA\Info(
+ *    title="APIs For Thrift Store",
+ *    version="1.0.0",
+ * ),
+ *   @OA\SecurityScheme(
+ *       securityScheme="bearerAuth",
+ *       in="header",
+ *       name="bearerAuth",
+ *       type="http",
+ *       scheme="bearer",
+ *       bearerFormat="JWT",
+ *    ),
+ */
+
+- Tạo một controller trong mục controller
+php artisan make:controller api/HomeController
+
+- Paste đoạn này vào 
+
+/**
+ * @OA\Post(
+ *    path="/api/home",
+ *    summary="Home data",
+ *    tags={"Home"},
+ *   @OA\Parameter(
+ *       name="name",
+ *       in="query",
+ *       description="Provide your name",
+ *       required=true,
+ *    ),
+ *   @OA\Response(
+ *          response=200,
+ *          description="Chao` ban",
+ *          @OA\MediaType(
+ *              mediaType="application/json",
+ *          )
+ *    ),
+ * )
+ */
+
+-- Tạo route mới có tên là api.php 
+
+<?php
+
+use App\Http\Controllers\api\HomeController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware('auth:api')->post('/home', [HomeController::class, 'index']);
+
+-- Viết hàm index trong HomeController
+
+class HomeController extends Controller
+{
+    //
+    public function index(Request $request){
+        return response()->json([
+            'name' => $request->input('name'),
+            'message'=> 'hello',
+        ]);
+    }
+}
+
+- Chạy cmd: php artisan l5-swagger:generate rồi bật serve web lên để test
+http://127.0.0.1:8000/api/documentation
+

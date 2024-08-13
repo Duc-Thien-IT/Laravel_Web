@@ -31,10 +31,34 @@
         @endforeach
         
       </div>
-      <div class="btn-box">
-        <a href="">
-          View All Products
-        </a>
+      <div class="div_deg">
+          {{$product->onEachSide(1)->links()}}
       </div>
     </div>
   </section>
+
+  <style type="text/css">
+        .div_deg{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .table_deg{
+            border: 2px solid black;
+        }
+
+        th{
+            background-color: skyblue;
+            color: #333;
+            font-size: 19px;
+            font-weight: bold;
+            padding: 15px;
+        }
+
+        td{
+            border: 1px solid black;
+            text-align: center;
+        }
+</style>

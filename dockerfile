@@ -1,18 +1,13 @@
 FROM php:8.2-fpm-alpine
 
-# Set environment variables
-ENV PHP_OPCACHE_ENABLE=1
-ENV PHP_OPCACHE_ENABLE_CLI=1
-ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
-ENV PHP_OPCACHE_REVALIDATE_FREQ=1
-
 # Set working directory
 ARG workdir=/var/www
 
 WORKDIR $workdir
 
 # Install system dependencies
-RUN apk update && apk add --no-cache \
+RUN apk update
+RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libpng-dev \
     libwebp-dev \
@@ -21,7 +16,6 @@ RUN apk update && apk add --no-cache \
     zip \
     bash \
     dos2unix
-
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
@@ -33,8 +27,6 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 #syns php.init
 COPY ./docker/php/php.ini /usr/local/etc/php/
-
-# COPY . .
 
 # Copy the application files, including public assets
 COPY . /var/www/

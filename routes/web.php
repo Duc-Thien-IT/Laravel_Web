@@ -51,6 +51,21 @@ route::post('update_product/{id}',[AdminController::class,'update_product'])->mi
 /* === Search product */
 route::get('product_search',[AdminController::class,'product_search'])->middleware(['auth', 'admin']);
 
+/* === Http add product */
+route::get('add_user',[AdminController::class,'addUser'])->middleware(['auth', 'admin']);
+/* === Upload product */
+route::post('upload_user',[AdminController::class,'uploadUser'])->middleware(['auth', 'admin']);
+/* === Http view product */
+route::get('view_user',[AdminController::class,'viewUser'])->middleware(['auth', 'admin']);
+/* === Delete Product */
+route::get('delete_user/{id}',[AdminController::class,'delete_user'])->middleware(['auth', 'admin']);
+/* === Http edit product */
+route::get('edit_user/{id}',[AdminController::class,'edit_user'])->middleware(['auth', 'admin']);
+/* === Update product */
+route::post('update_user/{id}',[AdminController::class,'update_user'])->middleware(['auth', 'admin']);
+/* === Search product */
+route::get('user_search',[AdminController::class,'user_search'])->middleware(['auth', 'admin']);
+
 /* ====== Home ====== */
 /* === Details product */
 route::get('detail_product/{id}',[HomeController::class,'detail_product']);
@@ -60,3 +75,5 @@ route::get('add_cart/{id}',[HomeController::class,'add_cart'])->middleware(['aut
 route::get('mycart',[HomeController::class,'mycart'])->middleware(['auth', 'verified']);
 /* === confirm order */
 route::post('comfirm_order',[HomeController::class,'comfirm_order'])->middleware(['auth', 'verified']);
+
+

@@ -27,6 +27,10 @@
                     <li><a href="{{url('add_product')}}">Add Product</a></li>
                     <li><a href="{{url('view_product')}}">View Product</a></li>
                   </ul>
+                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                    <li><a href="{{url('add_user')}}">Add User</a></li>
+                    <li><a href="{{url('view_user')}}">View User</a></li>
+                  </ul>
                 </li>
         </ul>
       </nav>

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use App\Repositories\Interface\CategoryRepositoryInterface;
 use App\Repositories\Interface\ProductRepositoryInterface;
-use GuzzleHttp\Handler\Proxy;
-use Laravel\Ui\Presets\React;
+use App\Repositories\Interface\UserRepositoryInterface;
 
 use function Pest\Laravel\delete;
 
@@ -17,11 +17,13 @@ class AdminController extends Controller
 {
     protected $categoryRepository;
     protected $productRepository;
+    protected $userRepository;
     
-    public function __construct(CategoryRepositoryInterface $categoryRepository, ProductRepositoryInterface $productRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, ProductRepositoryInterface $productRepository, UserRepositoryInterface $userRepository)
     {
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
+        $this->userRepository = $userRepository;
     }
 
     //Page Category and show category
@@ -195,6 +197,91 @@ class AdminController extends Controller
         $search = $request->search;
         $product = $this->productRepository->search('title', $search, 3);
         return view('admin.view_product', compact('product'));
+    }   
+
+
+    //CRUD User
+    public function addUser() {
+        $user = $this->userRepository->all();
+        return view('admin.add_user', compact('user'));
     }
 
+    public function uploadUser(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string',
+            'userType' => 'required|string',
+            'phone' => 'required|integer',
+            'address' => 'required|string'
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'userType' => $request->userType,
+            'phone' => $request->phone,
+            'address' => $request->address, 
+        ];
+
+        $this->userRepository->create($data);
+
+        toastr()->timeOut(10000)->closeButton()->addSuccess('User added successfully');
+        return redirect()->back();
+    }
+
+    public function viewUser() {
+        $user = $this->userRepository->paginate(3);
+        return view('admin.user', compact('user'));
+    }
+
+    //delete product
+    public function delete_user($id)
+    {
+        $user = $this->userRepository->find($id);
+        
+        $this->userRepository->delete($id);
+
+        toastr()->timeOut(10000)->closeButton()->addSuccess('User delete successfully');
+        return redirect()->back();
+    }
+
+    //Turn page edit product
+    public function edit_user($id){
+        $data = $this->userRepository->find($id);
+        return view('admin.edit_user', compact('data'));
+    }
+
+    //update product
+    public function update_user(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string',
+            'userType' => 'required|string',
+            'phone' => 'required|integer',
+            'address' => 'required|string',
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'userType' => $request->userType,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ];
+
+        $this->userRepository->update($data, $id);
+
+        toastr()->timeOut(10000)->closeButton()->addSuccess('User update successfully');
+        return redirect('/user');        
+    }
+
+    public function user_search(Request $request){
+        // $search = $request->search;
+
+        // $product = Product::where('title', 'LIKE', '%'.$search.'%')->paginate(3);
+        $search = $request->search;
+        $user = $this->userRepository->search('name', $search, 3);
+        return view('admin.user', compact('user'));
+    }  
 }

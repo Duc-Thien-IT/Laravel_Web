@@ -68,7 +68,7 @@
 
                     <div class="input_deg">
                         <label>Email</label>
-                        <textarea name="email">{{$data->email}}"</textarea>
+                        <textarea name="email">{{$data->email}}</textarea>
                     </div>
 
                     <div class="input_deg">

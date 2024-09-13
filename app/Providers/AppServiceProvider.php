@@ -14,6 +14,7 @@ use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
 
+    //Thay register
     public function register()
     {
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
